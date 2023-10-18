@@ -42,7 +42,13 @@ from dronekit import connect, VehicleMode, LocationGlobalRelative, LocationGloba
 import math
 input("start dronekit-sitl and connect missionPlanner, then press enter")
 print("Connecting to vehicle on: %s" % (connection_string,))
-vehicle = connect(connection_string, wait_ready=True)
+while True:
+    try:
+       vehicle = connect(connection_string, wait_ready=True)
+       break
+    except:
+        print("connection to drone failed!")
+
 print("mainloop started")
 while True:
     time.sleep(1)
@@ -122,13 +128,18 @@ while True:
         def gotoLocation(location,acc):
             vehicle.simple_goto(location)
             print(get_distance_metres(vehicle.location.global_frame, location))
-            while get_distance_metres(vehicle.location.global_frame, location)>=acc:
+            altError = abs(vehicle.location.global_relative_frame.alt - location.alt)
+            while get_distance_metres(vehicle.location.global_frame, location)+altError >= acc:
                 time.sleep(1)
-                print(get_distance_metres(vehicle.location.global_frame, location))
+                altError = abs(vehicle.location.global_relative_frame.alt - location.alt)
+                print("total error: ",get_distance_metres(vehicle.location.global_frame, location)+altError,"reported altitude: ",vehicle.location.global_relative_frame.alt, "alt error: ",altError)
         # Close vehicle object before exiting script
         gotoLocation(a_location,2)
         a_location = LocationGlobalRelative(float(cordLatLon[0]),float(cordLatLon[1]), 3)
         gotoLocation(a_location,2)
+        time.sleep(1)
+        print("droped the package")
+        time.sleep(1)
         a_location = LocationGlobalRelative(float(cordLatLon[0]),float(cordLatLon[1]), height)
         gotoLocation(a_location,2)
                 
