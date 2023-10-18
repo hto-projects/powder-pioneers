@@ -1,0 +1,4 @@
+run "dronekit-sitl copter --home=41.461314,-81.929453,683,353"
+start missionPlanner
+connect missionPlanner to the virtual drone
+start the python file
