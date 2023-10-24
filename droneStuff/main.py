@@ -53,6 +53,25 @@ print("mainloop started")
 while True:
     time.sleep(1)
     if webserverOut != "":
+        cordLatLon = webserverOut.split(",")
+        cordLatLon[0] = cordLatLon[0].replace("/","")
+        print(cordLatLon)
+        success = False
+        try:
+            float(cordLatLon[0])
+            float(cordLatLon[1])
+            success = True
+        except:
+            print("got non cord result: ",webserverOut)
+        if(success == False):
+            webserverOut = ""
+        strLat = str(cordLatLon[0])
+        strLon = str(cordLatLon[1])
+        strLat = strLat.split(".")
+        strLon = strLon.split(".")
+        if((len(strLat[1]) == 7 and len(strLon[1]) == 7) == False):
+            webserverOut = ""
+    if webserverOut != "":
         print("got data: ", webserverOut)
         
         cordLatLon = webserverOut.split(",")
@@ -72,13 +91,6 @@ while True:
 
         # how close are we to the target point
         def get_distance_metres(aLocation1, aLocation2):
-            """
-            Returns the ground distance in metres between two LocationGlobal objects.
-
-            This method is an approximation, and will not be accurate over large distances and close to the 
-            earth's poles. It comes from the ArduPilot test code: 
-            https://github.com/diydrones/ardupilot/blob/master/Tools/autotest/common.py
-            """
             dlat = aLocation2.lat - aLocation1.lat
             dlong = aLocation2.lon - aLocation1.lon
             return math.sqrt((dlat*dlat) + (dlong*dlong)) * 1.113195e5
@@ -121,7 +133,8 @@ while True:
                     time.sleep(1)
 
         arm_and_takeoff(height)
-        #41.4695185, -81.9325376
+        #41.4623485,-81.9280317
+    
         print("cord: ",cordLatLon)
         a_location = LocationGlobalRelative(float(cordLatLon[0]),float(cordLatLon[1]), height)
         print(a_location)
@@ -133,7 +146,8 @@ while True:
                 time.sleep(1)
                 altError = abs(vehicle.location.global_relative_frame.alt - location.alt)
                 print("total error: ",get_distance_metres(vehicle.location.global_frame, location)+altError,"reported altitude: ",vehicle.location.global_relative_frame.alt, "alt error: ",altError)
-        # Close vehicle object before exiting script
+        
+        #this line to 146 should be replaced with waypoint mission logic to avoid a situation where the drone gets disconnected while still in the air
         gotoLocation(a_location,2)
         a_location = LocationGlobalRelative(float(cordLatLon[0]),float(cordLatLon[1]), 3)
         gotoLocation(a_location,2)

@@ -1,4 +1,6 @@
 run "dronekit-sitl copter --home=41.461314,-81.929453,683,353"
-start missionPlanner
+run "mavproxy.py --master=tcp:127.0.0.1:5760 --out=127.0.0.1:14550"
+for real drone, replace --master=tcp:127.0.0.1:5760 with --master=/dev/ttyUSB(port number here)
+start qgroundcontroll
 connect missionPlanner to the virtual drone
 start the python file
