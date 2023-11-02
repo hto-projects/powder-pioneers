@@ -79,3 +79,12 @@ img {
   height: 30px;
   
 }
+
+#cart-image {
+  width: 40px;
+  height: auto;
+}
+
+.cart-item{
+  padding-right: 50px;
+}

@@ -7,6 +7,7 @@ serverPort = 8080
 global webserverOut
 global kill
 kill = 0
+manualMode = False
 webserverOut = ""
 class MyServer(BaseHTTPRequestHandler):
     global webserverOut
@@ -127,7 +128,7 @@ while True:
         print("got data: ", webserverOut)
         
         cordLatLon = webserverOut.split(",")
-        webserverOut = ""
+        
         cordLatLon[0] = cordLatLon[0].replace("/","")
         print(cordLatLon)
 
@@ -141,11 +142,18 @@ while True:
         print(" System status: %s" % vehicle.system_status.state)
         print(" Mode: %s" % vehicle.mode.name)    # settable
         try:
-            item = webserverOut[3]
+            item = str(cordLatLon[3])
+            print(cordLatLon)
+            print("item: ",item)
+            item = item.replace("%22","")
         except:
-            item = "PARSER ERROR"
-        print("location recieved! please load ",item," into the drone, then press enter")
-        input("")
+            print("PARSER ERROR")
+        webserverOut = ""
+
+        print("location recieved! please load",item,"into the drone, then press enter")
+        if manualMode:
+            input("")
+        
         print("!!!!!!!!!!!!!!")
         print("DRONE IS READY")
         print("!!!!!!!!!!!!!!")
@@ -192,7 +200,8 @@ while True:
             time.sleep(1)
         print("vehicle has landed")
         print("press enter to reactivate the drone")
-        input("")
+        if manualMode:
+            input("")
         print("!!!!!!!!!!!!!!")
         print("DRONE IS READY")
         print("!!!!!!!!!!!!!!")
