@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Powder Pioneer Drone Delivery Service</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <script src="script.js"> </script>
+</head>
+
+<body>
+
+  <!--HEADER!-->
+ <header id="header">
+   <h2>DRONE PAGE</h2>
+   <button id="cart-button" onclick="openForm()"><img src="images/cart.png" id="cart-icon"></button>
+ </header>
+
+  <!--SIDEBAR!-->
+  <div id="sidebar">
+    <p>
+      <h3> SIDEBAR</h3>
+    </p>
+    
+  </div>
+
+  <!--CONTENT!-->
+  <main>
+    <div class="content">
+      <h3> CONTENT </h3>
+      <div class="grid">
+
+        <!--SHOE OBJECT!-->
+        <div class="grid-item" id="shoe">
+          <img src="images/shoe.jpg">
+          <h4 id="name"> Shoe for Andrew<span id=price>$5</span></h4>
+          <p>Grace needs these shoes so she can be average height.</p>
+          <p>the line above this is a lie, andrew needs these because his shoes are a sin agains humanity, and should burn in hell for all of eternity</p>
+          <p>Says the one who whistles with the back of his mouth...</p>
+          <p>dont forget that I have a drone strike andrew</p>
+          <button id="button" onclick="addToCart(0)"> <img src="images/add-to-cart.png" id="addToCartIcon"> </button>
+        </div>
+
+        <!--SWORD OBJECT!-->
+        <div class="grid-item">
+          <img src="images/sword.jpg">
+          <h4 id="name"> Realistic Sword<span id=price>$50</span></h4>
+          <p> Super realistic sword for fighting tha opps</p>
+          <p> and for fighting andrew if he wears his "shoes" again</p>
+          <button id="button" onclick="addToCart(1)"> <img src="images/add-to-cart.png" id="addToCartIcon"> </button>
+        </div>
+
+        <!--HOUSE OBJECT!-->
+        <div class="grid-item">
+          <img src="images/house.jpg">
+          <h4 id="name"> Modern House<span id=price>$100</span></h4>
+          <p> Modern house for you and the Voices</p>
+          <button id="button" onclick="addToCart(2)"> <img src="images/add-to-cart.png" id="addToCartIcon"> </button>
+        </div>
+
+        <div class="grid-item">
+          <img src="images/basilisk.png">
+          <h4 id="name"> Bone Basilisk<span id=price>$100</span></h4>
+          <p> Basilisk for all your personal needs :) </p>
+          <button id="button" onclick="addToCart(3)"> <img src="images/add-to-cart.png" id="addToCartIcon"> </button>
+        </div>
+
+        <div class="grid-item">
+          <img src="images/nuke.jpg">
+          <h4 id="name"> nuke<span id=price>99¢</span></h4>
+          <p> for bombing andrew</p>
+          <button id="button"> <img src="images/add-to-cart.png" id="addToCartIcon"> </button>
+        </div>
+
+        <div class="grid-item">
+          <img src="https://www.twosisterscrafting.com/wp-content/uploads/2015/06/peppa-pig-cake-1200-featured-720x720.jpg">
+          <h4 id="name"> SAMPLE OBJECT<span id=price>$100</span></h4>
+          <p> Peppa pig will eat out ur mom for funsies if you buy her!</p>
+          <button id="button">  <img src="images/add-to-cart.png" id="addToCartIcon">  </button>
+        </div>
+
+        <div class="grid-item">
+          <img src="https://www.twosisterscrafting.com/wp-content/uploads/2015/06/peppa-pig-cake-1200-featured-720x720.jpg">
+          <h4 id="name"> SAMPLE OBJECT<span id=price>$100</span></h4>
+          <p> Peppa pig will eat ur mom for funsies if you buy her!</p>
+          <button id="button">  <img src="images/add-to-cart.png" id="addToCartIcon">  </button>
+        </div>
+
+        <div class="grid-item">
+          <img src="https://www.twosisterscrafting.com/wp-content/uploads/2015/06/peppa-pig-cake-1200-featured-720x720.jpg">
+          <h4 id="name"> SAMPLE OBJECT<span id=price>$100</span></h4>
+          <p> Peppa pig will eat ur mom for funsies if you buy her!</p>
+          <button id="button"> <img src="images/add-to-cart.png" id="addToCartIcon"> </button>
+        </div>
+
+        <div class="grid-item">
+          <img src="https://www.twosisterscrafting.com/wp-content/uploads/2015/06/peppa-pig-cake-1200-featured-720x720.jpg">
+          <h4 id="name"> SAMPLE OBJECT<span id=price>$100</span></h4>
+          <p> Peppa pig will eat ur mom for funsies if you buy her!</p>
+          <button id="button"> <img src="images/add-to-cart.png" id="addToCartIcon"> </button>
+        </div>
+        
+      </div>
+    </div>
+  </main>
+
+  <!--FORM!-->
+  <div class="form">
+  <h2 id="order-header"> Order </h2>
+    <table id="cart-display">
+      <tr>
+        <th> NAME </th>
+        <th> QTY.</th>
+      </tr>
+      
+    </table>
+
+    <h4> Billing Information </h4>
+
+    <form>
+    <input type="text" placeholder="latitude" id="lat" class="input-box">
+    <input type="text" placeholder="longitude" id="log" class="input-box">
+    <button onclick="enter()"> Submit </button>
+  </div>
+</form>
+  
+</body>
+</html>
