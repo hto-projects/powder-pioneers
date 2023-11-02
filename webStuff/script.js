@@ -48,7 +48,7 @@ function enter(){
   let lonLatString = latitude+","+longitude;
   let requestString = "http://127.0.0.1:8080/"+lonLatString+","+window.location.href
   window.location.replace(requestString);
-  alert(requestString); //comment this out for the demo
+  alert(requestString); //this is apparently REQUIRED for the website to talk to the drone
   //fetch(requestString,{mode: 'cors'});
   //fetch("http://127.0.0.1:8080/41.4623485,-81.9280317")
 

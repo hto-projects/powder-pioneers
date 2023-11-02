@@ -140,7 +140,21 @@ while True:
         print(" Is Armable?: %s" % vehicle.is_armable)
         print(" System status: %s" % vehicle.system_status.state)
         print(" Mode: %s" % vehicle.mode.name)    # settable
-
+        try:
+            item = webserverOut[3]
+        except:
+            item = "PARSER ERROR"
+        print("location recieved! please load ",item," into the drone, then press enter")
+        input("")
+        print("!!!!!!!!!!!!!!")
+        print("DRONE IS READY")
+        print("!!!!!!!!!!!!!!")
+        print("LAUNCHING IN 3")
+        time.sleep(1)
+        print("LAUNCHING IN 2")
+        time.sleep(1)
+        print("LAUNCHING IN 1")
+        time.sleep(1)
         # how close are we to the target point
 
 
@@ -157,20 +171,28 @@ while True:
             while get_distance_metres(vehicle.location.global_frame, location)+altError >= acc:
                 time.sleep(1)
                 altError = abs(vehicle.location.global_relative_frame.alt - location.alt)
-                print("total error: ",get_distance_metres(vehicle.location.global_frame, location)+altError,"reported altitude: ",vehicle.location.global_relative_frame.alt, "alt error: ",altError)
-        
+                print("total error: ",round(get_distance_metres(vehicle.location.global_frame, location)+altError),"reported altitude: ",round(vehicle.location.global_relative_frame.alt), "alt error: ",round(altError))
+            print("arrived")
         #this line to 146 should be replaced with waypoint mission logic to avoid a situation where the drone gets disconnected while still in the air
         gotoLocation(a_location,2)
         a_location = LocationGlobalRelative(float(cordLatLon[0]),float(cordLatLon[1]), 3)
         gotoLocation(a_location,2)
+        dropPackage = True #replace with object detection
         time.sleep(1)
-        print("droped the package")
+        if dropPackage:
+            print("droped the package")
+        if not dropPackage:
+            print("did NOT drop package, no target detected")
         time.sleep(1)
         a_location = LocationGlobalRelative(float(cordLatLon[0]),float(cordLatLon[1]), height)
         gotoLocation(a_location,2)
-                
         vehicle.mode = VehicleMode("RTL")
+        print("waiting for vehicle to land")
         while vehicle.armed:
             time.sleep(1)
-            print("waiting for vehicle to land")
         print("vehicle has landed")
+        print("press enter to reactivate the drone")
+        input("")
+        print("!!!!!!!!!!!!!!")
+        print("DRONE IS READY")
+        print("!!!!!!!!!!!!!!")
