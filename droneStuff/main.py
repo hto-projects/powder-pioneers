@@ -19,9 +19,18 @@ class MyServer(BaseHTTPRequestHandler):
         self.wfile.write(bytes("<p>Request: %s</p>" % self.path, "utf-8"))
         self.wfile.write(bytes("<body>", "utf-8"))
         self.wfile.write(bytes("<p>if you are seeing this and you ARE NOT the website, go away</p>", "utf-8"))
-        self.wfile.write(bytes("</body></html>", "utf-8"))
+        #self.wfile.write(bytes('<img src="images/shoe.jpg">',"utf-8"))
+        
         webserverOut = self.path
         print(webserverOut)
+        try:
+            reReDirect = webserverOut.split(",")[2]
+            reReDirectString = '<script>window.location.replace("'+reReDirect+'")</script>'
+            print(reReDirectString)
+            self.wfile.write(bytes(reReDirectString,"utf-8"))
+            self.wfile.write(bytes("</body></html>", "utf-8"))
+        except:
+            self.wfile.write(bytes("<p>redirecting to main site failed, did you pass a return address?</p>"))
     
 def serverThread():
     webServer = HTTPServer((hostName, serverPort), MyServer)
@@ -48,10 +57,51 @@ while True:
        break
     except:
         print("connection to drone failed!")
+def get_distance_metres(aLocation1, aLocation2):
+    dlat = aLocation2.lat - aLocation1.lat
+    dlong = aLocation2.lon - aLocation1.lon
+    return math.sqrt((dlat*dlat) + (dlong*dlong)) * 1.113195e5
+        
+        # this does a bunch of fancy stuff for the takeoff
+def arm_and_takeoff(aTargetAltitude):
+    """
+    Arms vehicle and fly to aTargetAltitude.
+    """
 
+    print("Basic pre-arm checks")
+    # Don't try to arm until autopilot is ready
+    while not vehicle.is_armable:
+        print(" Waiting for vehicle to initialise...")
+        time.sleep(1)
+
+    print("Arming motors")
+    # Copter should arm in GUIDED mode
+    vehicle.mode = VehicleMode("GUIDED")
+    vehicle.armed = True
+    print(vehicle.mode)
+
+    # Confirm vehicle armed before attempting to take off
+    while not vehicle.armed:
+        print(" Waiting for arming...")
+        time.sleep(1)
+
+    print("Taking off!")
+    if vehicle.armed:
+        vehicle.simple_takeoff(aTargetAltitude) # Take off to target altitude
+
+        # Wait until the vehicle reaches a safe height before processing the goto (otherwise the command
+        #  after Vehicle.simple_takeoff will execute immediately).
+        while True:
+            print(" Altitude: ", vehicle.location.global_relative_frame.alt)
+            #Break and return from function just below target altitude.
+            if vehicle.location.global_relative_frame.alt>=aTargetAltitude*0.95:
+                print("Reached target altitude")
+                break
+            time.sleep(1)
 print("mainloop started")
 while True:
     time.sleep(1)
+    #print("awaiting command")
     if webserverOut != "":
         cordLatLon = webserverOut.split(",")
         cordLatLon[0] = cordLatLon[0].replace("/","")
@@ -65,12 +115,14 @@ while True:
             print("got non cord result: ",webserverOut)
         if(success == False):
             webserverOut = ""
-        strLat = str(cordLatLon[0])
-        strLon = str(cordLatLon[1])
-        strLat = strLat.split(".")
-        strLon = strLon.split(".")
+        if(success):
+            strLat = str(cordLatLon[0])
+            strLon = str(cordLatLon[1])
+            strLat = strLat.split(".")
+            strLon = strLon.split(".")
         if((len(strLat[1]) == 7 and len(strLon[1]) == 7) == False):
             webserverOut = ""
+            print("low accuracy: ",cordLatLon)
     if webserverOut != "":
         print("got data: ", webserverOut)
         
@@ -90,47 +142,7 @@ while True:
         print(" Mode: %s" % vehicle.mode.name)    # settable
 
         # how close are we to the target point
-        def get_distance_metres(aLocation1, aLocation2):
-            dlat = aLocation2.lat - aLocation1.lat
-            dlong = aLocation2.lon - aLocation1.lon
-            return math.sqrt((dlat*dlat) + (dlong*dlong)) * 1.113195e5
-        
-        # this does a bunch of fancy stuff for the takeoff
-        def arm_and_takeoff(aTargetAltitude):
-            """
-            Arms vehicle and fly to aTargetAltitude.
-            """
 
-            print("Basic pre-arm checks")
-            # Don't try to arm until autopilot is ready
-            while not vehicle.is_armable:
-                print(" Waiting for vehicle to initialise...")
-                time.sleep(1)
-
-            print("Arming motors")
-            # Copter should arm in GUIDED mode
-            vehicle.mode = VehicleMode("GUIDED")
-            vehicle.armed = True
-            print(vehicle.mode)
-
-            # Confirm vehicle armed before attempting to take off
-            while not vehicle.armed:
-                print(" Waiting for arming...")
-                time.sleep(1)
-
-            print("Taking off!")
-            if vehicle.armed:
-                vehicle.simple_takeoff(aTargetAltitude) # Take off to target altitude
-
-                # Wait until the vehicle reaches a safe height before processing the goto (otherwise the command
-                #  after Vehicle.simple_takeoff will execute immediately).
-                while True:
-                    print(" Altitude: ", vehicle.location.global_relative_frame.alt)
-                    #Break and return from function just below target altitude.
-                    if vehicle.location.global_relative_frame.alt>=aTargetAltitude*0.95:
-                        print("Reached target altitude")
-                        break
-                    time.sleep(1)
 
         arm_and_takeoff(height)
         #41.4623485,-81.9280317
@@ -158,3 +170,7 @@ while True:
         gotoLocation(a_location,2)
                 
         vehicle.mode = VehicleMode("RTL")
+        while vehicle.armed:
+            time.sleep(1)
+            print("waiting for vehicle to land")
+        print("vehicle has landed")
