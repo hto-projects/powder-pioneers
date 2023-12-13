@@ -6,21 +6,37 @@
   <meta name="viewport" content="width=device-width">
   <title>Powder Pioneer Drone Delivery Service</title>
   <link href="style.css" rel="stylesheet" type="text/css" />
+  <link rel="icon" type="image/x-icon" href="/images/logo.ico">
   <script src="script.js"> </script>
 </head>
 
 <body>
 
   <!--HEADER!-->
- <header id="header">
-   <h2>DRONE PAGE</h2>
-   <button id="cart-button" onclick="openForm()"><img src="images/cart.png" id="cart-icon"></button>
+  <div id="header-container">
+ <header id="header" width="100%">
+   <h2 id="title" style="display:inline;"><img src="images/logo.png" id="logo" alt="logo" style="display:inline;"> Powder Pioneers</h2>
+   <h3 id="nav-bar"> 
+     <button onclick="closeForm()"> Home </button> 
+     <button onclick="openForm()"> Cart </button>
+     <button id="aboutBtn" onclick="toggleFunction()"> About Us </button>
+   
+   </h3>
  </header>
+    </div>
+  <!--BANNER!-->
+  <div class="banner">
+    <h1 id="banner-header"> Drone service </h1>
+    <h3 id="banner-text"> See our amazing drone tech that delivers items right to your doorstep </h3>
+    <button onclick="closeForm()" id="banner-btn" align="center"> Shop Now </button>
+  </div>
 
   <!--SIDEBAR!-->
   <div id="sidebar">
-    <p>
-      <h3> SIDEBAR</h3>
+    <h3 id="SidebarHeader"> About Us </h3>
+    <p class="txtwhite">
+      This project was a combination of efforts from Matt, Andrew, Gus, and Grace. 
+      We made a website that you can use to order our powder drones and deliver them to your home.
     </p>
     
   </div>
@@ -35,10 +51,7 @@
         <div class="grid-item" id="shoe">
           <img src="images/shoe.jpg">
           <h4 id="name"> Shoe for Andrew<span id=price>$5</span></h4>
-          <p>Grace needs these shoes so she can be average height.</p>
-          <p>the line above this is a lie, andrew needs these because his shoes are a sin agains humanity, and should burn in hell for all of eternity</p>
-          <p>Says the one who whistles with the back of his mouth...</p>
-          <p>dont forget that I have a drone strike andrew</p>
+          <p>for Andrew so he can be more classy.</p>
           <button id="button" onclick="addToCart(0)"> <img src="images/add-to-cart.png" id="addToCartIcon"> </button>
         </div>
 
@@ -47,13 +60,13 @@
           <img src="images/sword.jpg">
           <h4 id="name"> Realistic Sword<span id=price>$50</span></h4>
           <p> Super realistic sword for fighting tha opps</p>
-          <p> and for fighting andrew if he wears his "shoes" again</p>
+          <p> and for fighting andrew if he wears his "shoes" again<br> Check</p>
           <button id="button" onclick="addToCart(1)"> <img src="images/add-to-cart.png" id="addToCartIcon"> </button>
         </div>
 
         <!--HOUSE OBJECT!-->
         <div class="grid-item">
-          <img src="images/house.jpg">
+          <img src="images/house.jpg" max-width="200px">
           <h4 id="name"> Modern House<span id=price>$100</span></h4>
           <p> Modern house for you and the Voices</p>
           <button id="button" onclick="addToCart(2)"> <img src="images/add-to-cart.png" id="addToCartIcon"> </button>
@@ -69,36 +82,36 @@
         <div class="grid-item">
           <img src="images/nuke.jpg">
           <h4 id="name"> nuke<span id=price>99¢</span></h4>
-          <p> for bombing andrew</p>
-          <button id="button"> <img src="images/add-to-cart.png" id="addToCartIcon"> </button>
+          <p>*Not school apropriate*</p>
+          <button id="button" onclick="addToCart(4)"> <img src="images/add-to-cart.png" id="addToCartIcon"> </button>
         </div>
 
         <div class="grid-item">
-          <img src="https://www.twosisterscrafting.com/wp-content/uploads/2015/06/peppa-pig-cake-1200-featured-720x720.jpg">
-          <h4 id="name"> SAMPLE OBJECT<span id=price>$100</span></h4>
-          <p> Peppa pig will eat out ur mom for funsies if you buy her!</p>
-          <button id="button">  <img src="images/add-to-cart.png" id="addToCartIcon">  </button>
+          <img src="images/Nerds.png">
+          <h4 id="name">Nerds Box<span id=price>$2</span></h4>
+          <p>*Best Candy*</p>
+          <button id="button" onclick="addToCart(5)">  <img src="images/add-to-cart.png" id="addToCartIcon">  </button>
         </div>
 
         <div class="grid-item">
-          <img src="https://www.twosisterscrafting.com/wp-content/uploads/2015/06/peppa-pig-cake-1200-featured-720x720.jpg">
-          <h4 id="name"> SAMPLE OBJECT<span id=price>$100</span></h4>
-          <p> Peppa pig will eat ur mom for funsies if you buy her!</p>
-          <button id="button">  <img src="images/add-to-cart.png" id="addToCartIcon">  </button>
+          <img src="images/Playstation.png">
+          <h4 id="name"> PLAYSTATION! NOT A SCAM!<span id=price>$100</span></h4>
+          <p>Not a scam! get the play station five for cheap!</p>
+          <button id="button" onclick="addToCart(6)">  <img src="images/add-to-cart.png" id="addToCartIcon">  </button>
         </div>
 
         <div class="grid-item">
-          <img src="https://www.twosisterscrafting.com/wp-content/uploads/2015/06/peppa-pig-cake-1200-featured-720x720.jpg">
-          <h4 id="name"> SAMPLE OBJECT<span id=price>$100</span></h4>
-          <p> Peppa pig will eat ur mom for funsies if you buy her!</p>
-          <button id="button"> <img src="images/add-to-cart.png" id="addToCartIcon"> </button>
+          <img src="images/theConcreteGrippers.jpg">
+          <h4 id="name"> THE Concrete Grippers™<span id=price>₽100</span></h4>
+          <p> Andrews imfamous shoes. what are their origins? what was the designer smoking? no one knows!</p>
+          <button id="button" onclick="addToCart(7)"> <img src="images/add-to-cart.png" id="addToCartIcon"> </button>
         </div>
 
         <div class="grid-item">
-          <img src="https://www.twosisterscrafting.com/wp-content/uploads/2015/06/peppa-pig-cake-1200-featured-720x720.jpg">
-          <h4 id="name"> SAMPLE OBJECT<span id=price>$100</span></h4>
-          <p> Peppa pig will eat ur mom for funsies if you buy her!</p>
-          <button id="button"> <img src="images/add-to-cart.png" id="addToCartIcon"> </button>
+          <img src="images/Watch.jpeg">
+          <h4 id="name">Binary Watch<span id=price>30000¢</span></h4>
+          <p>show everyone in a 20 mile radius that you're a nerd with a watch.</p>
+          <button id="button" onclick="addToCart(8)"> <img src="images/add-to-cart.png" id="addToCartIcon"> </button>
         </div>
         
       </div>
@@ -113,9 +126,10 @@
         <th> NAME </th>
         <th> QTY.</th>
       </tr>
-      
-    </table>
 
+     
+    </table>
+     <h5 id="total"> ur mom</h5>
     <h4> Billing Information </h4>
 
     <form>

@@ -23,15 +23,82 @@ var items = [
     price: 5.00,
     image:"images/basilisk.png",
     quantity: 0
+  },
+  {
+    name:"nuke" ,
+    price:0.990,
+    image:"images/nuke.jpg",
+    quantity:0
+  },
+  {
+    name:"Nerds Box" ,
+    price:2.00,
+    image:"images/Nerds.png",
+    quantity:0
+  },
+  {
+    name:"Playstation" ,
+    price:100.00,
+    image:"images/Playstation.png",
+    quantity:0
+  },
+  {
+    name:"The Grippers" ,
+    price:100.00,
+    image:"images/theConcreteGrippers.jpg",
+    quantity:0
+  },
+  {
+    name:"Binary Watch" ,
+    price:300.00,
+    image:"images/Watch.jpeg",
+    quantity:0
   }
 ]
 
+window.onload = function() {
+  document.querySelector("#banner-header").style.opacity = "1";
+  document.querySelector("#banner-text").style.opacity = "1";
+  document.querySelector("#banner-btn").style.opacity = "1"
+}
 
 function openForm(){
-  document.querySelector(".content").style.display = "none";
+  document.querySelector(".banner").style.display= "none";
+document.querySelector(".content").style.display = "none";
   document.querySelector(".form").style.display = "block";
+
+  document.querySelector("#aboutBtn").style.display = "inline";
   spliceCart();
+  cartString();
+  
+  console.log(cartNameString);
   displayCart();
+}
+
+function closeForm(){
+  document.querySelector(".content").style.display = "block";
+  document.querySelector(".form").style.display = "none";
+
+  document.querySelector(".banner").style.display= "none";
+
+  document.querySelector("html").style.backgroundColor = "#f0f0f0";
+  document.querySelector("#nav-bar").style.display = "block";
+}
+
+
+var toggle = true;
+
+function toggleFunction(){
+    toggle ? A() : B();
+    toggle = !toggle;
+}
+
+function A() {
+  document.querySelector("#sidebar").style.display = "block";
+}
+
+function B() {
+  document.querySelector("#sidebar").style.display = "none";
 }
 
 var cartButton = document.querySelector("#cart-button");
@@ -59,6 +126,23 @@ function enter(){
   //tell me on discord when you are ready for me to test this with the drone
 }
 
+
+  //41.4623485,-81.9280317
+  let lonLatString = latitude+","+longitude;
+  let requestString = "http://127.0.0.1:8080/"+lonLatString+","+cartNameString+","+window.location.href
+  
+  //window.location.replace(requestString);
+  
+  
+  //window.open(requestString).focus();
+  alert(requestString+" if you are seeing this on the replit, the submit button works, bad news is the redirect does not work on replit. this is expected behavior and will work for the demo, also please notify me of any changes that you make so that I can add them to the github repo"); //this is apparently REQUIRED for the website to talk to the drone
+  //fetch(requestString,{mode: 'cors'});
+  //fetch("http://127.0.0.1:8080/41.4623485,-81.9280317")
+
+  //*click* that was easy
+  //tell me on discord when you are ready for me to test this with the drone
+}
+
 var cart = []
 var total = 0
 
@@ -67,12 +151,12 @@ function addToCart(itemIndex) {
   cart.push(item);
   item.quantity++;
   total = total + item.price;
-
   console.log(cart);
-  console.log(total);
+ 
 }
 
 var newCart = []
+var tempCart = []
 
 function spliceCart() {
   for (let i=0; i<cart.length; i++){
@@ -85,6 +169,18 @@ function spliceCart() {
   }
 }
 
+let cartNameString = ""
+  function cartString(){ 
+    for (let i=0; i<newCart.length; i++){
+      let tempItem = newCart[i];
+      let tempItemString = tempItem.name+","+tempItem.quantity;
+
+      tempCart.push(tempItemString);
+    }
+    console.log(tempCart)
+   cartNameString = JSON.stringify(tempCart);
+  }
+  
 function displayCart() {
   let tableElement = document.querySelector("#cart-display");
   tableElement.innerHTML = "";
@@ -143,11 +239,16 @@ function displayCart() {
       let qtyPlusBtn = document.createElement("button")
 
     qtyMinusBtn.textContent = "-"
-    qtyMinusBtn.id = "qty-minus"
-    qtyMinusBtn.onClick = "minusQty("+itemNameElement+")"
+    qtyMinusBtn.class = "qty-minus"
+    qtyMinusBtn.id = itemNameElement.textContent;
+    qtyMinusBtn.setAttribute("onClick", `minusQty(${i})`);
+
+    
+  
+    
     qtyPlusBtn.textContent = "+"
     qtyPlusBtn.id = "qty-plus"
-    qtyPlusBtn.onClick = "plusQty("+itemNameElement+")"
+    qtyPlusBtn.setAttribute("onClick", `plusQty(${i})`);
     
       itemQtyElement.textContent = newCart[i].quantity;
       itemQtyElement.id = "cart-item-qty";
@@ -155,19 +256,34 @@ function displayCart() {
       rowElement.appendChild(qtyMinusBtn);
       rowElement.appendChild(itemQtyElement);
       rowElement.appendChild(qtyPlusBtn);
-   
   }
-  
+
+  let totalElement = document.getElementById("total");
+  //console.log("Total Element Get by id")
+  //console.log(totalElement);
+
+
+  console.log(total);
+  totalElement.textContent = "Your total is: " +"$"+total.toFixed(2);
+  //totalElement.textContent = "Your total is: " +"$"+ total; 
 }
 
-function minusQty(itemNameElement){
-  let x = newCart.indexOf(itemNameElement);
-  cart[x].quantity --
-  displayCart()
+function minusQty(index){
+  if (newCart[index].quantity > 0) 
+    {
+      newCart[index].quantity --
+      total = total - newCart[index].price;
+      //total = Math.round((total - newCart[index].price) * (10 ** 2)) / (10 ** 2)
+       displayCart()
+    }
+  else {
+    return;
+  }
 }
 
-function plusQty(){
-  let x = newCart.indexOf(itemNameElement);
-  cart[x].quantity ++
-  displayCart()
+function plusQty(index){
+  newCart[index].quantity ++
+  total = (total + newCart[index].price);
+  //total = Math.round((total + newCart[index].price) * (10 ** 2)) / (10 ** 2)
+   displayCart();
 }

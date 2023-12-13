@@ -1,6 +1,8 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import time
 import threading
+import KNN
+#from ai import KNN
 connection_string = "tcp:127.0.0.1:5762"
 hostName = "127.0.0.1"
 serverPort = 8080
@@ -20,7 +22,8 @@ class MyServer(BaseHTTPRequestHandler):
         self.wfile.write(bytes("<p>Request: %s</p>" % self.path, "utf-8"))
         self.wfile.write(bytes("<body>", "utf-8"))
         self.wfile.write(bytes("<p>if you are seeing this and you ARE NOT the website, go away</p>", "utf-8"))
-        #self.wfile.write(bytes('<img src="images/shoe.jpg">',"utf-8"))
+        #self.wfile.write(bytes('<img src="skibidiWalter.jpg">', "utf-8"))
+        
         
         webserverOut = self.path
         print(webserverOut)
@@ -31,7 +34,7 @@ class MyServer(BaseHTTPRequestHandler):
             self.wfile.write(bytes(reReDirectString,"utf-8"))
             self.wfile.write(bytes("</body></html>", "utf-8"))
         except:
-            self.wfile.write(bytes("<p>redirecting to main site failed, did you pass a return address?</p>"))
+            self.wfile.write(bytes("<p>redirecting to main site failed, did you pass a return address?</p>","utf-8"))
     
 def serverThread():
     webServer = HTTPServer((hostName, serverPort), MyServer)
@@ -121,9 +124,9 @@ while True:
             strLon = str(cordLatLon[1])
             strLat = strLat.split(".")
             strLon = strLon.split(".")
-        if((len(strLat[1]) == 7 and len(strLon[1]) == 7) == False):
-            webserverOut = ""
-            print("low accuracy: ",cordLatLon)
+            if((len(strLat[1]) == 7 and len(strLon[1]) == 7) == False):
+                webserverOut = ""
+                print("low accuracy: ",cordLatLon)
     if webserverOut != "":
         print("got data: ", webserverOut)
         
@@ -131,8 +134,8 @@ while True:
         
         cordLatLon[0] = cordLatLon[0].replace("/","")
         print(cordLatLon)
-
-        height = 15
+        #
+        height = 7
         # show the admin that the drone, is infact, sane
         print("Get some vehicle attribute values:")
         print(" GPS: %s" % vehicle.gps_0)
@@ -153,22 +156,21 @@ while True:
         print("location recieved! please load",item,"into the drone, then press enter")
         if manualMode:
             input("")
-        
-        print("!!!!!!!!!!!!!!")
-        print("DRONE IS READY")
-        print("!!!!!!!!!!!!!!")
-        print("LAUNCHING IN 3")
-        time.sleep(1)
-        print("LAUNCHING IN 2")
-        time.sleep(1)
-        print("LAUNCHING IN 1")
-        time.sleep(1)
+            print("!!!!!!!!!!!!!!")
+            print("DRONE IS READY")
+            print("!!!!!!!!!!!!!!")
+            print("LAUNCHING IN 3")
+            time.sleep(1)
+            print("LAUNCHING IN 2")
+            time.sleep(1)
+            print("LAUNCHING IN 1")
+            time.sleep(1)
         # how close are we to the target point
 
 
         arm_and_takeoff(height)
-        #41.4623485,-81.9280317
-    
+        #41.469299,-81.933441
+        cordLatLon = [41.469299,-81.933441]
         print("cord: ",cordLatLon)
         a_location = LocationGlobalRelative(float(cordLatLon[0]),float(cordLatLon[1]), height)
         print(a_location)
@@ -181,7 +183,7 @@ while True:
                 altError = abs(vehicle.location.global_relative_frame.alt - location.alt)
                 print("total error: ",round(get_distance_metres(vehicle.location.global_frame, location)+altError),"reported altitude: ",round(vehicle.location.global_relative_frame.alt), "alt error: ",round(altError))
             print("arrived")
-        #this line to 146 should be replaced with waypoint mission logic to avoid a situation where the drone gets disconnected while still in the air
+        #this line to 146 should be replaced with waypoint mission logic to avoid a situation where the drone gets disconnected while still in the air: lol noz
         gotoLocation(a_location,2)
         a_location = LocationGlobalRelative(float(cordLatLon[0]),float(cordLatLon[1]), 3)
         gotoLocation(a_location,2)
