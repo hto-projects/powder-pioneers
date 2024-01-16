@@ -108,23 +108,13 @@ var cartButton = document.querySelector("#cart-button");
 function enter(){
   let longitude = document.querySelector("#log").value;
   let latitude = document.querySelector("#lat").value;
-  //41.4623485,-81.9280317
-
-  let cartString = JSON.stringify(cart[0].name);
-  //41.4623485,-81.9280317
-  let lonLatString = latitude+","+longitude;
-  let requestString = "http://127.0.0.1:8080/"+lonLatString+","+window.location.href+","+cartString
-
-  //let lonLatString = latitude+","+longitude;
-  //let requestString = "http://127.0.0.1:8080/"+lonLatString+","+window.location.href
-  window.location.replace(requestString);
-  alert(requestString); //this is apparently REQUIRED for the website to talk to the drone
-  //fetch(requestString,{mode: 'cors'});
-  //fetch("http://127.0.0.1:8080/41.4623485,-81.9280317")
-
-  //*click* that was easy
-  //tell me on discord when you are ready for me to test this with the drone
-}
+//return if either return null
+  if (latitude == "" || latitude == 0 || longitude == "" || longitude == 0) 
+  {
+    alert("please add latitude and longitude of drone delivery location");
+  }
+  
+  
 
 
   //41.4623485,-81.9280317

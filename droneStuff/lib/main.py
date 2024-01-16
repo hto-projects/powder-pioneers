@@ -5,7 +5,7 @@ import KNN
 import pyttsx3
 engine = pyttsx3.init()
 #from ai import KNN
-connection_string = "tcp:127.0.0.1:5762"
+connection_string = "/dev/ttyUSB0,57600"
 hostName = "127.0.0.1"
 serverPort = 8080
 global webserverOut
@@ -127,7 +127,7 @@ while True:
             strLat = strLat.split(".")
             strLon = strLon.split(".")
             if((len(strLat[1]) == 7 and len(strLon[1]) == 7) == False):
-                webserverOut = ""
+                #webserverOut = ""
                 print("low accuracy: ",cordLatLon)
     if webserverOut != "":
         print("got data: ", webserverOut)
@@ -155,7 +155,7 @@ while True:
             print("PARSER ERROR")
         webserverOut = ""
 
-        print("location recieved! please load",item,"into the drone, then press enter")
+        #print("location recieved! please load",item,"into the drone, then press enter")
         if manualMode:
             input("")
             print("!!!!!!!!!!!!!!")
@@ -172,7 +172,7 @@ while True:
 
         arm_and_takeoff(height)
         #41.469299,-81.933441
-        cordLatLon = [41.469299,-81.933441]
+        cordLatLon = [41.416002,-81.933831]
         print("cord: ",cordLatLon)
         a_location = LocationGlobalRelative(float(cordLatLon[0]),float(cordLatLon[1]), height)
         print(a_location)

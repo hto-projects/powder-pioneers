@@ -1,7 +1,7 @@
 run "dronekit-sitl copter --home=41.461314,-81.929453,683,353"
 run "mavproxy.py --master=tcp:127.0.0.1:5760 --out=127.0.0.1:14550"
 run "cd /home/matt2d2/codeProjects/hylandCapstone/funkykong/powder-pioneers/webStuff && python3 -m http.server 9000"
-for real drone, replace --master=tcp:127.0.0.1:5760 with --master=/dev/ttyAMC0,115200
+for real drone, replace --master=tcp:127.0.0.1:5760 with --master=/dev/ttyUSB0,57600
 start qgroundcontroll
 connect missionPlanner to the virtual drone
 start the python file
